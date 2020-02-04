@@ -6,4 +6,7 @@ lista_palabras = ["pablo", "viru", "otorrinolaringologo", "roquefort", "helicopt
 
 quest = random.choice(lista_palabras)
 
+muestra = quest[0] + ("." * (len(quest) - 2)) + quest[-1]
+
 print(quest)
+print(muestra)
