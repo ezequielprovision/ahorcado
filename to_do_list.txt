@@ -1,0 +1,4 @@
+#agregar ahorcado:
+# mostrar la palabra al final
+# mostrar letras usadas
+# usar un diccionario
