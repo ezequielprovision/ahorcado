@@ -182,7 +182,17 @@ lista_letras_usadas = [muestra[0], muestra[-1]]
 while intentos > 0:
     aux = convierte_string(muestra)
     letra = input("ingresa una letra, o arriesga con tu palabra definitiva\n")
-#    if len(letra) 
+    if len(letra) > 1:
+        if letra == quest:
+            print("Acertasteee!")
+            print(grafico(intentos, quest)) #recibe el arg quest para mostrarlo en el grafico
+            exit()
+        else:
+            print("Noooo")
+            intentos = 0
+            print(grafico(intentos, quest))
+            print("Looser!")
+            exit() 
     if letras_utilizadas(letra, lista_letras_usadas):
         print("Esa letra ya está utilizada, pierdes un intento!")
         intentos -= 1
