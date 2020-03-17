@@ -1,4 +1,9 @@
 import random
+def no_se_que_func_tiene_python_para_esto(y):
+    result = ""
+    for x in y:
+        result += x.upper() + " "
+    return result
 
 ###############################################################
 def busca_indices(letra, quest, muestra):
@@ -195,11 +200,16 @@ while intentos > 0:
             print("Muy bien!!")
     
     if not "." in muestra:
+        print(grafico(intentos, muestra))
         print("Sii!, Ganaste!!")
+
         exit()
+    aux__ = no_se_que_func_tiene_python_para_esto(lista_letras_usadas)
+    print("LETRAS YA USADAS: {}".format(aux__))
     print(grafico(intentos, muestra))
     
     if intentos > 0:
-        print("Quedan {} !!".format(intentos))
+        print("Quedan {} intentos!!".format(intentos))
     else:
         print("Que en paz descanse...")
+        print("La palabra era... \"{}\"".format(quest))
