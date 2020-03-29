@@ -136,34 +136,13 @@ def grafico(intentos, muestra):
     return dibujo
 
 ###########################################################################
+f = open(r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\nombres_ahorc.txt", "r")
+lista_palabras = []
 
-lista_palabras = ["pablo",
-                 "anteojos",
-                 "abecedario",
-                 "virulana",
-                 "otorrinolaringologia",
-                 "roquefort",
-                 "helicoptero",
-                 "cualquiera",
-                 "etcetera",
-                 "parabrisas",
-                 "saturno",
-                 "mariposa",
-                 "serpentario",
-                 "departamento",
-                 "libertad",
-                 "ahorcado",
-                 "cartografia",
-                 "python3",
-                 "sombrilla",
-                 "manguera",
-                 "canguro",
-                 "legumbres",
-                 "marcadores",
-                 "simpatico",
-                 "cutis",
-                 "mañanero",
-                 "cargador"]
+for line in f:
+    lista_palabras.append(line.strip("\n"))
+
+f.close()
 
 quest = random.choice(lista_palabras)
 intentos = 7
