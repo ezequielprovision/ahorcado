@@ -1,4 +1,12 @@
 #agregar ahorcado:
 # mostrar la palabra al final
 # mostrar letras usadas
-# usar un diccionario
+# usar un diccionario: 
+    mover todo el lkista de nombres y q el archivo levante todo el listado, y lo use
+#crear un menu en el inicio con opciones:
+    1 - jugar 
+    2 - agregar palabras
+    3 - mostrar palabras
+    4 - salir
+
+

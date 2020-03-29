@@ -136,13 +136,13 @@ def grafico(intentos, muestra):
     return dibujo
 
 ###########################################################################
-f = open(r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\nombres_ahorc.txt", "r")
+#f = open(r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\nombres_ahorc.txt", "r")
 lista_palabras = []
 
-for line in f:
-    lista_palabras.append(line.strip("\n"))
+with open(r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\nombres_ahorc.txt", "r") as f:
+    for line in f:
+        lista_palabras.append(line.strip("\n"))
 
-f.close()
 
 quest = random.choice(lista_palabras)
 intentos = 7
