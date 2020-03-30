@@ -135,8 +135,47 @@ def grafico(intentos, muestra):
 
     return dibujo
 
-###########################################################################
-#f = open(r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\nombres_ahorc.txt", "r")
+#########################  MENU INICIO  ####################################
+battery_file = r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\nombres_ahorc.txt"
+start = False
+while not start:
+    menu = input("""Bienvenides al AhoArcade:
+    Elige una opción:
+    1 - jugar 
+    2 - agregar palabras
+    3 - mostrar palabras
+    4 - salir
+    """)
+    if menu == "1":
+        start = True
+
+    elif menu == "2":
+        with open(battery_file, "r") as f:
+            new_file = "" 
+            for line in f:
+                new_file += line   ### LEVANTA LAS PALABRAS DEL TXT
+        with open(battery_file, "w") as f:
+            writing_file = True
+            while writing_file:   ### LOOP PARA AGREGAR VARIAS PALABRAS
+                new_file += ("\n" + input("Escribe una palabra\n"))
+                salir = input("""{} \nPara agregar otra palabra ingresa 1 
+                Para volver al menú 2\n""".format(new_file))
+                if salir == "2":
+                    writing_file = False
+
+            f.write(new_file) #ESCRIBE EN EL ARCHIVO TODAS LAS MODIF HECHAS EN LA VAR NEW_FILE
+            
+    elif menu == "3":
+        with open(battery_file, "r") as f:
+            for line in f:
+                print(line.strip("\n"))
+
+    else:
+        exit()
+
+############################################################################
+
+
 lista_palabras = []
 
 with open(r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\nombres_ahorc.txt", "r") as f:
