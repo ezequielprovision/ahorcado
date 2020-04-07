@@ -1,5 +1,30 @@
 import random
+import os
 
+#################    FUNCIONES DEL MENU   ####################
+def menu_option_2(battery_file):
+    with open(battery_file, "r") as f:
+        new_file = [] 
+        for line in f:
+            new_file.append(line.strip('\n'))   ### LEVANTA LAS PALABRAS DEL TXT
+
+    while True:               ### Voy a suponer q el usuario ingresa la palabra de la manera adecuada
+        new_word = input('Ingresa una palabra sin espacios ni caracteres raros\n')
+        if new_word == '1':   ### Sino tendria que hacer una funcion que compare todos los
+            break             ### caracteres a ver si son validos
+        elif not new_word in new_file:
+            new_file.append(new_word)
+            print('Agregado!, Ingresa otra palabra o \"1\" para salir')
+        else:
+            print('Esa palabra ya está en la lista')
+
+
+def menu_option_3(file):
+    with open(file, "r") as f:
+        for line in f:
+            print(line.strip("\n"))
+
+###############################################################
 def no_se_que_func_tiene_python_para_esto(y):
     result = ""
     for x in y:
@@ -155,7 +180,13 @@ def grafico(intentos, muestra):
     return dibujo
 
 #########################  MENU INICIO  ####################################
-battery_file = r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\nombres_ahorc.txt"
+#battery_file = r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\nombres_ahorc.txt"
+path = os.path.abspath(__file__)  # path entero de donde esta el archivo corriendo (en este caso ahorcado.py)
+path = os.path.dirname(path)  # directorio del archivo, solo resta sumarle el nombre del archivo
+battery_file = os.path.join(path, "nombres_ahorc.txt")  # usando os.path.join te aseguras 
+# que agregue las barras correctas dependiendo del sistema operativo, 
+# ya que en mac y linux es / en vez de \
+
 start = False
 while not start:
     menu = input("""Bienvenides al AhoArcade:
@@ -169,26 +200,10 @@ while not start:
         start = True
 
     elif menu == "2":
-        with open(battery_file, "r") as f:
-            new_file = "" 
-            for line in f:
-                new_file += line   ### LEVANTA LAS PALABRAS DEL TXT
-        with open(battery_file, "w") as f:
-            writing_file = True
-            while writing_file:   ### LOOP PARA AGREGAR VARIAS PALABRAS
-                new_file += ("\n" + input("Escribe una palabra\n"))
-                salir = input("""{} \nPara agregar otra palabra ingresa 1 
-                Para volver al menú 2\n""".format(new_file))
-                if salir == "2":
-                    writing_file = False
+        menu_option_2(battery_file)
 
-            f.write(new_file) #ESCRIBE EN EL ARCHIVO TODAS LAS MODIF HECHAS EN LA VAR NEW_FILE
-            
     elif menu == "3":
-        with open(battery_file, "r") as f:
-            for line in f:
-                print(line.strip("\n"))
-
+        menu_option_3(battery_file)
     else:
         exit()
 
@@ -196,9 +211,36 @@ while not start:
 play = True
 score = 0
 _continue = None
-loaded_file = r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\saved_scores.txt"
-table_score = load_state(loaded_file) # me va a devolver un dicc con los nombres y puntajes
-print('Puntajes anteriores: \n{}'.format(table_score))
+#loaded_file = r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\saved_scores.txt"
+
+path = os.path.abspath(__file__)  # path entero de donde esta el archivo corriendo (en este caso ahorcado.py)
+path = os.path.dirname(path)  # directorio del archivo, solo resta sumarle el nombre del archivo
+loaded_file = os.path.join(path, "saved_scores.txt")  # usando os.path.join te aseguras 
+# que agregue las barras correctas dependiendo del sistema operativo, 
+# ya que en mac y linux es / en vez de \
+
+
+if not os.path.exists(loaded_file):  ## No tengo idea si lo que estoy haciendo esta bien
+    with open(loaded_file, 'w') as f: ## Me lo pasaste como 'os.exists' y me tiro error
+        f.write('')
+else:
+    table_score = load_state(loaded_file) # me va a devolver un dicc con los nombres y puntajes
+    print('Puntajes anteriores: \n{}'.format(table_score))
+
+############################################################################ 
+# Problema al crear diccionario:
+#  Si el nombre se repite (la clave del dicc) el valor mutable se va a pisar
+#  o sea que si un mismo usuario graba más de una vez su nombre, el programa muestra como puntaje
+#  el ultimo valor que está en el texto
+#  ejemplo:
+#   pablo : 250
+#   pablo : 30
+#   pablo : 105
+#   en el print de puntajes va a devolver {'pablo' : 105}
+#  
+#   No se me ocurre como solucionarlo sin una forma cabeza
+############################################################################ 
+
 
 
 lista_palabras = []
@@ -235,7 +277,7 @@ while play:
                 print("Sumas {} puntos!!".format(intentos))
                 score += intentos #el valor de intentos ya fue multiplicado
                 intentos = 0
-                _continue = input("Tu puntaje es {}! \n Sigues jugando? (y = SI / n = NO)".format(score))
+                _continue = input("Tu puntaje es {}! \n Sigues jugando? (y = SI / n = NO)\n".format(score))
                 if _continue == "n":  ## Al ingresar 'y' va a emplezar de nuevo
                     play = False
 
@@ -247,7 +289,7 @@ while play:
                 print("Looser!")
                 if score > 0 :
                     print("Tienes un total de {} puntos".format(score))
-                _continue = input("Tu puntaje es {}! \n Sigues jugando? (y = SI / n = NO)".format(score))
+                _continue = input("Tu puntaje es {}! \n Sigues jugando? (y = SI / n = NO)\n".format(score))
 
                 if _continue == "n":  ## Al ingresar 'y' va a emplezar de nuevo
                     play = False
@@ -275,7 +317,7 @@ while play:
                 intentos = intentos * 10
                 print("Sumas {} puntos!".format(intentos))
                 score += intentos
-                _continue = input("Tu puntaje TOTAL es {}! \n Sigues jugando? (y = SI / n = NO)".format(score))
+                _continue = input("Tu puntaje TOTAL es {}! \n Sigues jugando? (y = SI / n = NO)\n".format(score))
                 intentos = 0
                 if _continue == "n":
                     play = False
@@ -302,9 +344,14 @@ with open(loaded_file, "r") as f:
     for line in f:
         to_save += line
 
-with open(loaded_file, "w") as f:
-    f.write(to_save)
-
 #convertir esto en print tabla con valores de mayor a menor
 print(to_save)
+
+with open(loaded_file, "w") as f:
+    clean_table = input('Quieres borrar la tabla de puntajes?\n (y = SI / n = NO)\n')
+    if clean_table == 'n':  # Caso contrario no guarda y el file queda en blanco
+        f.write(to_save)
+
+
+
 
