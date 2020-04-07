@@ -1,6 +1,6 @@
 import random
 import os
-
+import grafico
 #################    FUNCIONES DEL MENU   ####################
 def menu_option_2(battery_file):
     with open(battery_file, "r") as f:
@@ -82,102 +82,7 @@ def save_state(score):
     
 ###########################################################
 
-def grafico(intentos, muestra):
-    dibujo = ""
-    if intentos == 7:
-        dibujo = """
-    ---------------
-    |             |
-    |           
-    |           
-    |            
-    |            
-    |            
-    |
-      {}""".format(muestra)
 
-    if intentos == 6:
-        dibujo = """
-    ---------------
-    |             |
-    |           (¬.¬)
-    |           
-    |            
-    |            
-    |            
-    |
-      {}""".format(muestra)
-    elif intentos == 5:
-        dibujo = """
-    ---------------
-    |             |
-    |           (¬.¬)
-    |            /
-    |             
-    |           
-    |
-    |
-      {}""".format(muestra)
-
-    elif intentos == 4:
-        dibujo = """
-    ---------------
-    |             |
-    |           (¬.¬)
-    |            / \\
-    |             
-    |           
-    |
-    |
-      {}""".format(muestra)
- 
-    elif intentos == 3:
-        dibujo = """
-    ---------------
-    |             |
-    |           (¬.¬)
-    |            / \\
-    |             |
-    |           
-    |
-    |
-      {}""".format(muestra)
-
-    elif intentos == 2:
-        dibujo = """
-    ---------------
-    |             |
-    |           (¬.¬)
-    |            / \\
-    |             |
-    |            /
-    |
-    |
-      {}""".format(muestra)
-    elif intentos == 1:
-        dibujo = """
-    ---------------
-    |             |
-    |           (¬.¬)
-    |            / \\
-    |             |
-    |            / \\
-    |
-    |
-      {}""".format(muestra)
-    elif intentos == 0:
-        dibujo = """
-    ---------------
-    |             |
-    |           (X.X) AAAAAAAAHHHHHHGGGG!
-    |           ======
-    |            / \\
-    |             |
-    |            / \\
-    |
-      {}""".format(muestra)
-
-    return dibujo
 
 #########################  MENU INICIO  ####################################
 #battery_file = r"C:\Users\eromi\Documents\GitHub\proyectos\ahorcado\nombres_ahorc.txt"
@@ -272,7 +177,7 @@ while play:
         if len(letra) > 1:
             if letra == quest:
                 print("Acertasteee!")
-                print(grafico(intentos, quest)) #recibe el arg quest para mostrarlo en el grafico
+                print(grafico.draw_sprite(intentos, quest)) #recibe el arg quest para mostrarlo en el grafico
                 intentos = intentos * 35  #Al arriesgar da un puntaje mucho mayor
                 print("Sumas {} puntos!!".format(intentos))
                 score += intentos #el valor de intentos ya fue multiplicado
@@ -285,7 +190,7 @@ while play:
             else:
                 print("Noooo")
                 intentos = 0
-                print(grafico(intentos, quest))
+                print(grafico.draw_sprite(intentos, quest))
                 print("Looser!")
                 if score > 0 :
                     print("Tienes un total de {} puntos".format(score))
@@ -312,7 +217,7 @@ while play:
                     print("Muy bien!!")
             
             if not "." in muestra:
-                print(grafico(intentos, muestra))
+                print(grafico.draw_sprite(intentos, muestra))
                 print("Sii!, Ganaste!!")
                 intentos = intentos * 10
                 print("Sumas {} puntos!".format(intentos))
@@ -325,7 +230,7 @@ while play:
             else:  ### si todavia tiene '.' 
                 aux__ = no_se_que_func_tiene_python_para_esto(lista_letras_usadas)
                 print("LETRAS YA USADAS: {}".format(aux__))
-                print(grafico(intentos, muestra))
+                print(grafico.draw_sprite(intentos, muestra))
                 
                 if intentos > 0:
                     print("Quedan {} intentos!!".format(intentos))
