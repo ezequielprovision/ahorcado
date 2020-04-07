@@ -12,14 +12,21 @@ battery_file = os.path.join(path, "nombres_ahorc.txt")  # usando os.path.join te
 # que agregue las barras correctas dependiendo del sistema operativo, 
 # ya que en mac y linux es / en vez de \
 
+path = os.path.abspath(__file__)  
+path = os.path.dirname(path)  
+loaded_file = os.path.join(path, "saved_scores.txt")
+
 start = False
+
+print('Bienvenides al AhoArcade:')
 while not start:
-    menu = input("""Bienvenides al AhoArcade:
-    Elige una opción:
+    menu = input("""Elige una opción:
     1 - jugar 
     2 - agregar palabras
     3 - mostrar palabras
-    4 - salir
+    4 - mostrar tabla de puntajes
+    5 - borrar tabla de puntajes
+    6 - salir
     """)
     if menu == "1":
         start = True
@@ -29,6 +36,13 @@ while not start:
 
     elif menu == "3":
         menu_screen.option_3(battery_file)
+
+    elif menu == "4":
+        state.score_printer(loaded_file, path)
+    
+    elif menu == "5":
+        with open(loaded_file, "w") as f:
+            f.write('')
     else:
         exit()
 
@@ -36,41 +50,13 @@ while not start:
 play = True
 score = 0
 _continue = None
-
-path = os.path.abspath(__file__)  
-path = os.path.dirname(path)  
-loaded_file = os.path.join(path, "saved_scores.txt")   
-
-
-
-if not os.path.exists(loaded_file):  
-    with open(loaded_file, 'w') as f: 
-        f.write('')
-else:
-    table_score = state.load(loaded_file) # me va a devolver un dicc con los nombres y puntajes
-    print('Puntajes anteriores: \n{}'.format(table_score))
-
-############################################################################ 
-# Problema al crear diccionario:
-#  Si el nombre se repite (la clave del dicc) el valor mutable se va a pisar
-#  o sea que si un mismo usuario graba más de una vez su nombre, el programa muestra como puntaje
-#  el ultimo valor que está en el texto
-#  ejemplo:
-#   pablo : 250
-#   pablo : 30
-#   pablo : 105
-#   en el print de puntajes va a devolver {'pablo' : 105}
-#  
-#   No se me ocurre como solucionarlo sin una forma cabeza
-############################################################################ 
-
-
-
 lista_palabras = []
 
 with open(battery_file, "r") as f:
     for line in f:
         lista_palabras.append(line.strip("\n"))
+
+print("*** Comencemos! ***\n")
 
 while play:
     quest = random.choice(lista_palabras)
@@ -81,9 +67,6 @@ while play:
 
     muestra = engines.busca_indices(muestra[0], quest, muestra) 
     muestra = engines.busca_indices(muestra[-1], quest, muestra)
-    
-    if _continue is None:  #de lo contrario va a mostrar el bienvenide cada vez q juegues
-        print("Bienvenides al AhoArcade! \n*** Comencemos! ***\n")
 
     print(engines.convierte_string(muestra))
     lista_letras_usadas = [muestra[0], muestra[-1]]
@@ -118,7 +101,7 @@ while play:
                     play = False
 
         else:   ### o sea si el len es = 1         
-            if engines.letras_utilizadas(letra, lista_letras_usadas):
+            if letra in lista_letras_usadas: #letras_utilizadas
                 print("Esa letra ya está utilizada, pierdes un intento!")
                 intentos -= 1
                 muestra = engines.convierte_string(muestra)
@@ -171,9 +154,7 @@ with open(loaded_file, "r") as f:
 print(to_save)
 
 with open(loaded_file, "w") as f:
-    clean_table = input('Quieres borrar la tabla de puntajes?\n (y = SI / n = NO)\n')
-    if clean_table == 'n':  # Caso contrario no guarda y el file queda en blanco
-        f.write(to_save)
+    f.write(to_save)
 
 
 
