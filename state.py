@@ -1,8 +1,27 @@
 import os
 
-def load(load_file):
+def load(score_file):
+    result = []
+    aux = []
+    with open(score_file, 'r') as f:
+        for line in f:
+            line.strip("\n")
+            name, score = line.split(' ') # Crea nombre, puntaje(str)
+            score = int(score)            # Puntaje pasa a INT
+            aux.append(name)              # Inserta nombre
+            aux.append(score)             # inserta puntaje
+            result.append(aux)            # Inserta lista dentro de lista (result)
+            aux = []                      # Lista Vacía para pasar a siguiente linea
+        return result
+
+
+################## Funcion para diccionario #####################
+#
+# La dejo por si cambio de opinion
+#
+def _load(score_file):
     result = {}
-    with open(load_file, 'r') as f:
+    with open(score_file, 'r') as f:
         for line in f:
             line.strip("\n")
             key, value = line.split(' ')
