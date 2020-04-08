@@ -2,7 +2,7 @@ import random
 import os
 import grafico
 import menu_screen
-import engines
+import string_helpers
 import state
     
 
@@ -14,7 +14,7 @@ battery_file = os.path.join(path, "nombres_ahorc.txt")  # usando os.path.join te
 
 path = os.path.abspath(__file__)  
 path = os.path.dirname(path)  
-loaded_file = os.path.join(path, "saved_scores.txt")
+score_file = os.path.join(path, "saved_scores.txt")
 
 start = False
 
@@ -38,51 +38,53 @@ while not start:
         menu_screen.option_3(battery_file)
 
     elif menu == "4":
-        state.score_printer(loaded_file, path)
+        state.score_printer(score_file, path)
     
     elif menu == "5":
-        with open(loaded_file, "w") as f:
-            f.write('')
+        with open(score_file, "w") as f:
+            pass # detele 
     else:
         exit()
 
 ########################### COMIENZA EL JUEGO ###########################################
-play = True
-score = 0
-_continue = None
-lista_palabras = []
+play = True       # Makes loop to continue playing 
+score = 0         # Int of player score
+_continue = None  # When 'n' play = False
+words_list = []   # List of words 
+hidden_word = ""  # Request word
+graphic_word = "" # Will show matched letters
+used_letters = [] # Stock of used letters
+lives = 0         # Number of attemps befor loosing
+letter = ""       # user input
 
 with open(battery_file, "r") as f:
     for line in f:
-        lista_palabras.append(line.strip("\n"))
+        words_list.append(line.strip("\n"))
 
 print("*** Comencemos! ***\n")
 
 while play:
-    quest = random.choice(lista_palabras)
-    lista_palabras.remove(quest) #Para que no vuelva a tocar la misma palabra 2 veces
-    intentos = 7
+    hidden_word = random.choice(words_list)
+    words_list.remove(hidden_word) # will not choice same word twice
+    lives = 7
 
-    muestra = quest[0] + ("." * (len(quest) - 2)) + quest[-1]
+    graphic_word = string_helpers.round_begins(graphic_word, hidden_word) # reveals 1st and last letter
 
-    muestra = engines.busca_indices(muestra[0], quest, muestra) 
-    muestra = engines.busca_indices(muestra[-1], quest, muestra)
+    print(string_helpers.convierte_string(graphic_word))
+    
+    used_letters = [graphic_word[0], graphic_word[-1]]
 
-    print(engines.convierte_string(muestra))
-    lista_letras_usadas = [muestra[0], muestra[-1]]
-
-
-    while intentos > 0:
-        aux = engines.convierte_string(muestra)
-        letra = input("ingresa una letra, o arriesga con tu palabra definitiva\n")
-        if len(letra) > 1:
-            if letra == quest:
+    while lives > 0:
+        aux = string_helpers.convierte_string(graphic_word)
+        letter = input("ingresa una letra, o arriesga con tu palabra definitiva\n")
+        if len(letter) > 1:
+            if letter == hidden_word:
                 print("Acertasteee!")
-                print(grafico.draw_sprite(intentos, quest)) #recibe el arg quest para mostrarlo en el grafico
-                intentos = intentos * 35  #Al arriesgar da un puntaje mucho mayor
-                print("Sumas {} puntos!!".format(intentos))
-                score += intentos #el valor de intentos ya fue multiplicado
-                intentos = 0
+                print(grafico.draw_sprite(lives, hidden_word)) 
+                lives = lives * 35  #Al arriesgar da un puntaje mucho mayor
+                print("Sumas {} puntos!!".format(lives))
+                score += lives #el valor de lives ya fue multiplicado
+                lives = 0
                 _continue = input("Tu puntaje es {}! \n Sigues jugando? (y = SI / n = NO)\n".format(score))
                 if _continue == "n":  ## Al ingresar 'y' va a emplezar de nuevo
                     play = False
@@ -90,8 +92,8 @@ while play:
 
             else:
                 print("Noooo")
-                intentos = 0
-                print(grafico.draw_sprite(intentos, quest))
+                lives = 0
+                print(grafico.draw_sprite(lives, hidden_word))
                 print("Looser!")
                 if score > 0 :
                     print("Tienes un total de {} puntos".format(score))
@@ -101,43 +103,43 @@ while play:
                     play = False
 
         else:   ### o sea si el len es = 1         
-            if letra in lista_letras_usadas: #letras_utilizadas
+            if letter in used_letters: #letras_utilizadas
                 print("Esa letra ya está utilizada, pierdes un intento!")
-                intentos -= 1
-                muestra = engines.convierte_string(muestra)
+                lives -= 1
+                graphic_word = string_helpers.convierte_string(graphic_word)
 
             else:
-                lista_letras_usadas.append(letra)
-                muestra = engines.busca_indices(letra, quest, muestra)
-                muestra = engines.convierte_string(muestra)
+                used_letters.append(letter)
+                graphic_word = string_helpers.busca_indices(letter, hidden_word, graphic_word)
+                graphic_word = string_helpers.convierte_string(graphic_word)
 
-                if aux == muestra:
+                if aux == graphic_word:
                     print("No!")
-                    intentos -= 1
+                    lives -= 1
                 else:
                     print("Muy bien!!")
             
-            if not "." in muestra:
-                print(grafico.draw_sprite(intentos, muestra))
+            if not "." in graphic_word:
+                print(grafico.draw_sprite(lives, graphic_word))
                 print("Sii!, Ganaste!!")
-                intentos = intentos * 10
-                print("Sumas {} puntos!".format(intentos))
-                score += intentos
+                lives = lives * 10
+                print("Sumas {} puntos!".format(lives))
+                score += lives
                 _continue = input("Tu puntaje TOTAL es {}! \n Sigues jugando? (y = SI / n = NO)\n".format(score))
-                intentos = 0
+                lives = 0
                 if _continue == "n":
                     play = False
 
             else:  ### si todavia tiene '.' 
-                aux__ = engines.string_used_words(lista_letras_usadas)
+                aux__ = string_helpers.string_used_words(used_letters)
                 print("LETRAS YA USADAS: {}".format(aux__))
-                print(grafico.draw_sprite(intentos, muestra))
+                print(grafico.draw_sprite(lives, graphic_word))
                 
-                if intentos > 0:
-                    print("Quedan {} intentos!!".format(intentos))
+                if lives > 0:
+                    print("Quedan {} lives!!".format(lives))
                 else:  ## si perdiste
                     print("Que en paz descanse...")
-                    print("La palabra era... \"{}\"".format(quest))
+                    print("La palabra era... \"{}\"".format(hidden_word))
                     if score > 0 :
                         print("Tienes un total de {} puntos".format(score))
                     _continue = input("Tu puntaje es {}! \n Sigues jugando? (y = SI / n = NO)".format(score))
@@ -146,14 +148,14 @@ while play:
 
 to_save = state.save(score)
 
-with open(loaded_file, "r") as f:
+with open(score_file, "r") as f:
     for line in f:
         to_save += line
 
 #convertir esto en print tabla con valores de mayor a menor
 print(to_save)
 
-with open(loaded_file, "w") as f:
+with open(score_file, "w") as f:
     f.write(to_save)
 
 
