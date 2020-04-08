@@ -1,2 +1,9 @@
-# convertir en funciones el menu
 # ordenar puntajes de mayor a menor
+    for x in lista:
+        if x[1] > lista[1]:
+        etc...
+
+
+
+# Cambiar nombres a engines y sus variables y funciones
+# validacion explicita de que el usuario no ponga espacio

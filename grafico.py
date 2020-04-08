@@ -1,6 +1,6 @@
-def draw_sprite(intentos, muestra):
+def draw_sprite(lives, graphic_word):
     dibujo = ""
-    if intentos == 7:
+    if lives == 7:
         dibujo = """
     ---------------
     |             |
@@ -10,9 +10,9 @@ def draw_sprite(intentos, muestra):
     |            
     |            
     |
-      {}""".format(muestra)
+      {}""".format(graphic_word)
 
-    if intentos == 6:
+    if lives == 6:
         dibujo = """
     ---------------
     |             |
@@ -22,8 +22,8 @@ def draw_sprite(intentos, muestra):
     |            
     |            
     |
-      {}""".format(muestra)
-    elif intentos == 5:
+      {}""".format(graphic_word)
+    elif lives == 5:
         dibujo = """
     ---------------
     |             |
@@ -33,9 +33,9 @@ def draw_sprite(intentos, muestra):
     |           
     |
     |
-      {}""".format(muestra)
+      {}""".format(graphic_word)
 
-    elif intentos == 4:
+    elif lives == 4:
         dibujo = """
     ---------------
     |             |
@@ -45,9 +45,9 @@ def draw_sprite(intentos, muestra):
     |           
     |
     |
-      {}""".format(muestra)
+      {}""".format(graphic_word)
  
-    elif intentos == 3:
+    elif lives == 3:
         dibujo = """
     ---------------
     |             |
@@ -57,9 +57,9 @@ def draw_sprite(intentos, muestra):
     |           
     |
     |
-      {}""".format(muestra)
+      {}""".format(graphic_word)
 
-    elif intentos == 2:
+    elif lives == 2:
         dibujo = """
     ---------------
     |             |
@@ -69,8 +69,8 @@ def draw_sprite(intentos, muestra):
     |            /
     |
     |
-      {}""".format(muestra)
-    elif intentos == 1:
+      {}""".format(graphic_word)
+    elif lives == 1:
         dibujo = """
     ---------------
     |             |
@@ -80,8 +80,8 @@ def draw_sprite(intentos, muestra):
     |            / \\
     |
     |
-      {}""".format(muestra)
-    elif intentos == 0:
+      {}""".format(graphic_word)
+    elif lives == 0:
         dibujo = """
     ---------------
     |             |
@@ -91,6 +91,6 @@ def draw_sprite(intentos, muestra):
     |             |
     |            / \\
     |
-      {}""".format(muestra)
+      {}""".format(graphic_word)
 
     return dibujo
