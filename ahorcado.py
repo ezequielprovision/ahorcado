@@ -6,11 +6,10 @@ import string_helpers
 import state
     
 
-path = os.path.abspath(__file__)  # path entero de donde esta el archivo corriendo (en este caso ahorcado.py)
-path = os.path.dirname(path)  # directorio del archivo, solo resta sumarle el nombre del archivo
-battery_file = os.path.join(path, "nombres_ahorc.txt")  # usando os.path.join te aseguras 
-# que agregue las barras correctas dependiendo del sistema operativo, 
-# ya que en mac y linux es / en vez de \
+path = os.path.abspath(__file__)  
+path = os.path.dirname(path)  
+battery_file = os.path.join(path, "nombres_ahorc.txt")   
+
 
 path = os.path.abspath(__file__)  
 path = os.path.dirname(path)  
@@ -46,7 +45,7 @@ while not start:
     else:
         exit()
 
-########################### COMIENZA EL JUEGO ###########################################
+########################### BEGINS THE GAME ###########################################
 play = True       # Makes loop to continue playing 
 score = 0         # Int of player score
 _continue = None  # When 'n' play = False
@@ -67,60 +66,55 @@ while play:
     hidden_word = random.choice(words_list)
     words_list.remove(hidden_word) # will not choice same word twice
     lives = 7
-
+    used_letters = [hidden_word[0], hidden_word[-1]] 
     graphic_word = string_helpers.round_begins(graphic_word, hidden_word) # reveals 1st and last letter
 
-    print(string_helpers.convierte_string(graphic_word))
-    
-    used_letters = [graphic_word[0], graphic_word[-1]]
-
+    print(graphic_word)
     while lives > 0:
-        aux = string_helpers.convierte_string(graphic_word)
         letter = input("ingresa una letra, o arriesga con tu palabra definitiva\n")
         if len(letter) > 1:
             if letter == hidden_word:
                 print("Acertasteee!")
-                print(grafico.draw_sprite(lives, hidden_word)) 
-                lives = lives * 35  #Al arriesgar da un puntaje mucho mayor
+                print(grafico.draw_sprite(lives, hidden_word, used_letters)) 
+                lives = lives * 35  # Gambling a full word gives higher score
                 print("Sumas {} puntos!!".format(lives))
-                score += lives #el valor de lives ya fue multiplicado
+                score += lives
                 lives = 0
                 _continue = input("Tu puntaje es {}! \n Sigues jugando? (y = SI / n = NO)\n".format(score))
-                if _continue == "n":  ## Al ingresar 'y' va a emplezar de nuevo
+                if _continue == "n":
                     play = False
 
 
             else:
                 print("Noooo")
                 lives = 0
-                print(grafico.draw_sprite(lives, hidden_word))
+                print(grafico.draw_sprite(lives, hidden_word, used_letters))
                 print("Looser!")
                 if score > 0 :
                     print("Tienes un total de {} puntos".format(score))
                 _continue = input("Tu puntaje es {}! \n Sigues jugando? (y = SI / n = NO)\n".format(score))
-
-                if _continue == "n":  ## Al ingresar 'y' va a emplezar de nuevo
+                if _continue == "n":
                     play = False
 
-        else:   ### o sea si el len es = 1         
-            if letter in used_letters: #letras_utilizadas
+        else:   ### if length = 1         
+            if letter in used_letters: 
                 print("Esa letra ya está utilizada, pierdes un intento!")
                 lives -= 1
-                graphic_word = string_helpers.convierte_string(graphic_word)
 
             else:
                 used_letters.append(letter)
-                graphic_word = string_helpers.busca_indices(letter, hidden_word, graphic_word)
-                graphic_word = string_helpers.convierte_string(graphic_word)
+                aux = graphic_word
+                graphic_word = string_helpers.search_matches(letter, hidden_word, graphic_word)
+                graphic_word = "".join(graphic_word)
 
-                if aux == graphic_word:
-                    print("No!")
+                if aux == graphic_word: # aux value is graphic_word after reveal a new letter
+                    print("No!")        # If had not change, it´s wrong
                     lives -= 1
-                else:
+                else:                   # Else, inputed letter it´s okey
                     print("Muy bien!!")
             
             if not "." in graphic_word:
-                print(grafico.draw_sprite(lives, graphic_word))
+                print(grafico.draw_sprite(lives, graphic_word, used_letters))
                 print("Sii!, Ganaste!!")
                 lives = lives * 10
                 print("Sumas {} puntos!".format(lives))
@@ -130,20 +124,18 @@ while play:
                 if _continue == "n":
                     play = False
 
-            else:  ### si todavia tiene '.' 
-                aux__ = string_helpers.string_used_words(used_letters)
-                print("LETRAS YA USADAS: {}".format(aux__))
-                print(grafico.draw_sprite(lives, graphic_word))
+            else:  ### if '.' in graphic_word 
+                print(grafico.draw_sprite(lives, graphic_word, used_letters))
                 
                 if lives > 0:
-                    print("Quedan {} lives!!".format(lives))
-                else:  ## si perdiste
+                    print("Quedan {} intentos!!".format(lives))
+                else:  # lost the round
                     print("Que en paz descanse...")
                     print("La palabra era... \"{}\"".format(hidden_word))
                     if score > 0 :
                         print("Tienes un total de {} puntos".format(score))
-                    _continue = input("Tu puntaje es {}! \n Sigues jugando? (y = SI / n = NO)".format(score))
-                    if _continue == "n":  ## Al ingresar 'y' va a emplezar de nuevo
+                    _continue = input("Tu puntaje es {}! \n Sigues jugando? (y = SI / n = NO)\n".format(score))
+                    if _continue == "n":
                         play = False
 
 to_save = state.save(score)
