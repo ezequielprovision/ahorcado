@@ -6,12 +6,12 @@ def load(score_file):
     with open(score_file, 'r') as f:
         for line in f:
             line.strip("\n")
-            name, score = line.split(' ') # Crea nombre, puntaje(str)
-            score = int(score)            # Puntaje pasa a INT
-            aux.append(name)              # Inserta nombre
-            aux.append(score)             # inserta puntaje
-            result.append(aux)            # Inserta lista dentro de lista (result)
-            aux = []                      # Lista Vacía para pasar a siguiente linea
+            name, score = line.split(' ') # Creates name and score
+            score = int(score)            # Converts score to int
+            aux.append(name)              # Inserts name
+            aux.append(score)             # inserts score
+            result.append(aux)            # Inserts list in lista (result)
+            aux = []                      # Empty list to continue for loop
         return result
 
 
@@ -44,5 +44,5 @@ def score_printer(loaded_file, path):
         with open(loaded_file, 'w') as f: 
             f.write('')
     else:
-        table_score = load(loaded_file) # me va a devolver un dicc con los nombres y puntajes
+        table_score = load(loaded_file) 
         print('Puntajes anteriores: \n{}'.format(table_score))
