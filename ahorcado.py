@@ -1,19 +1,19 @@
 import random
 import os
-import grafico
+import graphic
 import menu_screen
 import string_helpers
 import state
     
 
-path = os.path.abspath(__file__)  
-path = os.path.dirname(path)  
-battery_file = os.path.join(path, "nombres_ahorc.txt")   
+path_words = os.path.abspath(__file__)  
+path_words = os.path.dirname(path_words)  
+battery_file = os.path.join(path_words, "nombres_ahorc.txt")   
 
 
-path = os.path.abspath(__file__)  
-path = os.path.dirname(path)  
-score_file = os.path.join(path, "saved_scores.txt")
+path_scores = os.path.abspath(__file__)  
+path_scores = os.path.dirname(path_scores)  
+score_file = os.path.join(path_scores, "saved_scores.txt")
 
 start = False
 
@@ -37,7 +37,7 @@ while not start:
         menu_screen.option_3(battery_file)
 
     elif menu == "4":
-        state.score_printer(score_file, path)
+        menu_screen.option_4(score_file)
     
     elif menu == "5":
         with open(score_file, "w") as f:
@@ -75,7 +75,7 @@ while play:
         if len(letter) > 1:
             if letter == hidden_word:
                 print("Acertasteee!")
-                print(grafico.draw_sprite(lives, hidden_word, used_letters)) 
+                print(graphic.draw_sprite(lives, hidden_word, used_letters)) 
                 lives = lives * 35  # Gambling a full word gives higher score
                 print("Sumas {} puntos!!".format(lives))
                 score += lives
@@ -88,7 +88,7 @@ while play:
             else:
                 print("Noooo")
                 lives = 0
-                print(grafico.draw_sprite(lives, hidden_word, used_letters))
+                print(graphic.draw_sprite(lives, hidden_word, used_letters))
                 print("Looser!")
                 if score > 0 :
                     print("Tienes un total de {} puntos".format(score))
@@ -114,7 +114,7 @@ while play:
                     print("Muy bien!!")
             
             if not "." in graphic_word:
-                print(grafico.draw_sprite(lives, graphic_word, used_letters))
+                print(graphic.draw_sprite(lives, graphic_word, used_letters))
                 print("Sii!, Ganaste!!")
                 lives = lives * 10
                 print("Sumas {} puntos!".format(lives))
@@ -125,7 +125,7 @@ while play:
                     play = False
 
             else:  ### if '.' in graphic_word 
-                print(grafico.draw_sprite(lives, graphic_word, used_letters))
+                print(graphic.draw_sprite(lives, graphic_word, used_letters))
                 
                 if lives > 0:
                     print("Quedan {} intentos!!".format(lives))
@@ -138,17 +138,19 @@ while play:
                     if _continue == "n":
                         play = False
 
-to_save = state.save(score)
 
-with open(score_file, "r") as f:
-    for line in f:
-        to_save += line
+player_data_list, player_data_str = state.user_data(score)
 
-#convertir esto en print tabla con valores de mayor a menor
-print(to_save)
+score_list = state.load(score_file)
+if type(score_list) == list: # If saved_scores does not exist, score_list is not a list
+    score_list.append(player_data_list)
+    print(score_list)
 
-with open(score_file, "w") as f:
-    f.write(to_save)
+with open(score_file, 'a') as f:
+    f.write(player_data_str)
+
+
+print(player_data_str)
 
 
 
