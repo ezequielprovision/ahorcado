@@ -1,12 +1,8 @@
 import os
 
 def load(score_file):
-    if not os.path.exists(score_file):  
-        with open(score_file, 'w') as f: 
-            f.write('')
-        print('No hay puntajes anteriores')
-    else:
-        result = []
+    result = []
+    if os.path.exists(score_file):
         aux = []
         with open(score_file, 'r') as f:
             for line in f:
@@ -17,8 +13,7 @@ def load(score_file):
                 aux.append(score)             # inserts score
                 result.append(aux)            # Inserts list in list (result)
                 aux = []                      # Empty list to continue for loop
-            return result
-
+    return result
 
 ##########################################################
 
@@ -37,4 +32,14 @@ def user_data(score):
 
 
 ########################################################
+
+def sort_scores(score_list):
+    i = 1 #index constant value
+    for ix_1, x in enumerate(score_list):  # x is an array, [1] is the int (score)
+        for ix_2 , y in enumerate(score_list):
+            if ix_2 == ix_1 and ix_2 < (len(score_list) - 1):
+                ix_2 += 1
+            if x[i] > y[i]:
+                score_list[ix_1], score_list[ix_2] = score_list[ix_2], score_list[ix_1]                
+    return  score_list 
 
