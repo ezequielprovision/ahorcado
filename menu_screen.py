@@ -29,12 +29,12 @@ def option_3(battery_file):
 
 
 def option_4(score_file):
-    if not os.path.exists(score_file):  
-        with open(score_file, 'w') as f: 
-            f.write('')
-    else:
-        score_table = state.load(score_file)
+    score_table = state.load(score_file)
+    if score_table:
+        score_table = state.sort_scores(score_table)
         result_table = ""
         for x in score_table:
             result_table += str(x) + '\n'
         print('Tabla de puntajes:\n{}'.format(result_table))
+    else:
+        print('No hay puntajes anteriores')

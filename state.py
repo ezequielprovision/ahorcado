@@ -23,7 +23,8 @@ def user_data(score):
     """
     player_data_list= []
     player_data_str = ''
-    gamer_name = input("Ingresa tu nombre sin espacios en el medio \n")
+    gamer_name = input("Ingresa tu nombre (Hasta 8 letras) \n")
+    gamer_name = gamer_name[:8].replace(' ', '_')
     player_data_list.append(gamer_name)
     player_data_list.append(score)    
     score = str(score)
