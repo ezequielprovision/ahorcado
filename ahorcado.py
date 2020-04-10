@@ -142,15 +142,18 @@ while play:
 player_data_list, player_data_str = state.user_data(score)
 
 score_list = state.load(score_file)
-if type(score_list) == list: # If saved_scores does not exist, score_list is not a list
+if score_list: # If saved_scores does not exist, score_list is empty
     score_list.append(player_data_list)
-    print(score_list)
+    score_list = state.sort_scores(score_list)
+    result_table = ""
+    for x in score_list:
+        result_table += str(x) + '\n'
+    print('Tabla de puntajes:\n{}'.format(result_table))
+ 
 
 with open(score_file, 'a') as f:
     f.write(player_data_str)
 
-
-print(player_data_str)
 
 
 
