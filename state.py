@@ -2,47 +2,42 @@ import os
 
 def load(score_file):
     result = []
-    aux = []
-    with open(score_file, 'r') as f:
-        for line in f:
-            line.strip("\n")
-            name, score = line.split(' ') # Crea nombre, puntaje(str)
-            score = int(score)            # Puntaje pasa a INT
-            aux.append(name)              # Inserta nombre
-            aux.append(score)             # inserta puntaje
-            result.append(aux)            # Inserta lista dentro de lista (result)
-            aux = []                      # Lista Vacía para pasar a siguiente linea
-        return result
-
-
-################## Funcion para diccionario #####################
-#
-# La dejo por si cambio de opinion
-#
-def _load(score_file):
-    result = {}
-    with open(score_file, 'r') as f:
-        for line in f:
-            line.strip("\n")
-            key, value = line.split(' ')
-            result[key] = int(value.strip('\n')) ## Saca salto de linea, y convierte en entero
-        return result
+    if os.path.exists(score_file):
+        with open(score_file, 'r') as f:
+            for line in f:
+                line.strip("\n")
+                name, score = line.split(' ')
+                score = int(score)
+                result.append([name, score])
+    return result
 
 ##########################################################
 
-def save(score):
-    gamer_name = input("Ingresa tu nombre sin espacios en el medio \n")
-    score = str(score)
-    text_will_save = gamer_name + ' ' + score + '\n'
-    return text_will_save
+def user_data(score):
+    player_data_list= []
+    gamer_name = input("Ingresa tu nombre (Hasta 8 letras) \n")
+    gamer_name = gamer_name[:8].replace(' ', '_')
+    player_data_list.append(gamer_name)
+    player_data_list.append(score)    
+    return player_data_list
 
 
 ########################################################
 
-def score_printer(loaded_file, path):
-    if not os.path.exists(loaded_file):  
-        with open(loaded_file, 'w') as f: 
-            f.write('')
-    else:
-        table_score = load(loaded_file) # me va a devolver un dicc con los nombres y puntajes
-        print('Puntajes anteriores: \n{}'.format(table_score))
+def sort_scores(score_list):
+    for x in range(0, len(score_list)):
+        for y in range(x + 1, len(score_list)):
+            a = score_list[x]
+            b = score_list[y]
+            if a[1] < b[1]: 
+                score_list[x], score_list[y] = score_list[y], score_list[x]                
+    return  score_list 
+
+#######################################################
+
+def save(score_list, score_file):
+    save_str_format = ""
+    for x in score_list:
+        save_str_format += x[0] + ' ' + str(x[1]) + '\n'
+    with open(score_file, 'w') as f:
+        f.write(save_str_format)
