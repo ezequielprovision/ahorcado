@@ -18,29 +18,30 @@ def load(score_file):
 ##########################################################
 
 def user_data(score):
-    """
-    returns the sames contents as a list and as a string
-    """
     player_data_list= []
-    player_data_str = ''
     gamer_name = input("Ingresa tu nombre (Hasta 8 letras) \n")
     gamer_name = gamer_name[:8].replace(' ', '_')
     player_data_list.append(gamer_name)
     player_data_list.append(score)    
-    score = str(score)
-    player_data_str = gamer_name + ' ' + score + '\n'
-    return player_data_list, player_data_str
+    return player_data_list
 
 
 ########################################################
 
 def sort_scores(score_list):
-    i = 1 #index constant value
-    for ix_1, x in enumerate(score_list):  # x is an array, [1] is the int (score)
-        for ix_2 , y in enumerate(score_list):
-            if ix_2 == ix_1 and ix_2 < (len(score_list) - 1):
-                ix_2 += 1
-            if x[i] > y[i]:
-                score_list[ix_1], score_list[ix_2] = score_list[ix_2], score_list[ix_1]                
+    for x in range(0, len(score_list)):
+        for y in range(x + 1, len(score_list)):
+            a = score_list[x]
+            b = score_list[y]
+            if a[1] < b[1]: 
+                score_list[x], score_list[y] = score_list[y], score_list[x]                
     return  score_list 
 
+#######################################################
+
+def save(score_list, score_file):
+    save_str_format = ""
+    for x in score_list:
+        save_str_format += x[0] + ' ' + str(x[1]) + '\n'
+    with open(score_file, 'w') as f:
+        f.write(save_str_format)
