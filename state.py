@@ -3,16 +3,12 @@ import os
 def load(score_file):
     result = []
     if os.path.exists(score_file):
-        aux = []
         with open(score_file, 'r') as f:
             for line in f:
                 line.strip("\n")
-                name, score = line.split(' ') # Creates name and score
-                score = int(score)            # Converts score to int
-                aux.append(name)              # Inserts name
-                aux.append(score)             # inserts score
-                result.append(aux)            # Inserts list in list (result)
-                aux = []                      # Empty list to continue for loop
+                name, score = line.split(' ')
+                score = int(score)
+                result.append([name, score])
     return result
 
 ##########################################################
