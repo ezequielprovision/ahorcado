@@ -6,14 +6,14 @@ import string_helpers
 import state
     
 
-path_words = os.path.abspath(__file__)  
-path_words = os.path.dirname(path_words)  
-battery_file = os.path.join(path_words, "nombres_ahorc.txt")   
+path = os.path.abspath(__file__)  
+path = os.path.dirname(path)  
+battery_file = os.path.join(path, "nombres_ahorc.txt")   
 
 
-path_scores = os.path.abspath(__file__)  
-path_scores = os.path.dirname(path_scores)  
-score_file = os.path.join(path_scores, "saved_scores.txt")
+path = os.path.abspath(__file__)  
+path = os.path.dirname(path)  
+score_file = os.path.join(path, "saved_scores.txt")
 
 start = False
 
@@ -148,8 +148,10 @@ player_data_list = state.user_data(score) # makes user name
 score_list = state.load(score_file)       # loads previous scores
 score_list.append(player_data_list)       # inserts new score to the list
 
-if score_list: # If saved_scores does not exist, score_list is empty
+if len(score_list) > 1:
     score_list = state.sort_scores(score_list)
+    if len(score_list) > 5: # saves untill 5 scores
+        score_list.remove(score_list[5])
     print('Tabla de puntajes:\n{}'.format(string_helpers.result_table(score_list)))
  
 
