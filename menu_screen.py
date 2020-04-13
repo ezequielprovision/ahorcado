@@ -1,6 +1,7 @@
 #################    FUNCIONES DEL MENU   ####################
 import state
 import os
+import string_helpers
 
 def load_words(battery_file):
     with open(battery_file, "r") as f:
@@ -31,10 +32,6 @@ def option_3(battery_file):
 def option_4(score_file):
     score_table = state.load(score_file)
     if score_table:
-        score_table = state.sort_scores(score_table)
-        result_table = ""
-        for x in score_table:
-            result_table += str(x) + '\n'
-        print('Tabla de puntajes:\n{}'.format(result_table))
+        print('Tabla de puntajes:\n{}'.format(string_helpers.result_table(score_table)))
     else:
         print('No hay puntajes anteriores')
