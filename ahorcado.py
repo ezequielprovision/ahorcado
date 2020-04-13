@@ -65,6 +65,11 @@ print("*** Comencemos! ***\n")
 while play:
     hidden_word = random.choice(words_list)
     words_list.remove(hidden_word) # will not choice same word twice
+    
+    if not words_list:         # when list has removed all words
+        print("Lo siento, no quedan más palabras!\n")
+        break   
+    
     lives = 7
     used_letters = [hidden_word[0], hidden_word[-1]] 
     graphic_word = string_helpers.round_begins(graphic_word, hidden_word) # reveals 1st and last letter
@@ -139,20 +144,16 @@ while play:
                         play = False
 
 
-player_data_list, player_data_str = state.user_data(score)
+player_data_list = state.user_data(score) # makes user name
+score_list = state.load(score_file)       # loads previous scores
+score_list.append(player_data_list)       # inserts new score to the list
 
-score_list = state.load(score_file)
 if score_list: # If saved_scores does not exist, score_list is empty
-    score_list.append(player_data_list)
     score_list = state.sort_scores(score_list)
-    result_table = ""
-    for x in score_list:
-        result_table += str(x) + '\n'
-    print('Tabla de puntajes:\n{}'.format(result_table))
+    print('Tabla de puntajes:\n{}'.format(string_helpers.result_table(score_list)))
  
 
-with open(score_file, 'a') as f:
-    f.write(player_data_str)
+state.save(score_list, score_file)
 
 
 
