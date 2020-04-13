@@ -33,3 +33,9 @@ def round_begins(graphic_word, hidden_word):
     graphic_word[0] = graphic_word[0].upper()
     graphic_word[-1] = graphic_word[-1].upper()
     return "".join(graphic_word) 
+
+def result_table(score_list):
+    result = ""
+    for x in score_list:
+        result += str(x) + '\n'
+    return result
